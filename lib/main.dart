@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'quote.dart';
+import 'quote_card.dart';
 
 void main() => runApp(MaterialApp(
       home: QuoteList(),
@@ -19,10 +20,6 @@ class _QuoteListState extends State<QuoteList> {
     Quote(author: "J.플레처", text: "사랑과 전쟁 사이에는 모든 전술이 허용된다."),
   ];
 
-  Widget quoteTemplate(quote) {
-    return QuoteCard(quote: quote);
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,38 +29,15 @@ class _QuoteListState extends State<QuoteList> {
         backgroundColor: Colors.brown,
       ),
       body: Column(
-        children: quotes.map((quote) => quoteTemplate(quote)).toList(),
-      ),
-    );
-  }
-}
-
-class QuoteCard extends StatelessWidget {
-  final Quote? quote;
-  QuoteCard({this.quote});
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      margin: EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 0.0),
-      child: Padding(
-        padding: const EdgeInsets.all(12.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Text(
-              '${quote?.text}',
-              style: TextStyle(fontSize: 18.0, color: Colors.grey[600]),
-            ),
-            SizedBox(
-              height: 6.0,
-            ),
-            Text(
-              '${quote?.author}',
-              style: TextStyle(fontSize: 14.0, color: Colors.grey[800]),
-            ),
-          ],
-        ),
+        children: quotes
+            .map((quote) => QuoteCard(
+                quote: quote,
+                delete: () {
+                  setState(() {
+                    quotes.remove(quote);
+                  });
+                }))
+            .toList(),
       ),
     );
   }
